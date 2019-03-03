@@ -1,5 +1,4 @@
-#!/Users/iliesochirca/Documents/Python/chrty/env/bin/python3
-
+#!/home/ilie/Documents/Private/chrity/env/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

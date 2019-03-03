@@ -25,7 +25,7 @@ SECRET_KEY = 'bx5sup423fdki)2f3y3yts&$&qcz-j3dx%n%&wxh$!if9=zx=z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -75,17 +75,29 @@ WSGI_APPLICATION = 'chrty.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
 DATABASES = {
+
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'chrity',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'app_db',
         'USER': 'root',
-        'PASSWORD': 'pass4ilie',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-    },
+        'PASSWORD': 'pass4root',
+        'HOST': 'db',
+        'PORT': 5432,
+    }
 }
+
+
+# OR WE COULD DO LIKE THIS
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': os.environ.get('POSTGRES_DB', ''),
+#         'USER': os.environ.get('POSTGRES_USER', ''),
+#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
+#         'HOST': os.environ.get('POSTGRES_HOST', ''),
+#     }
+# }
 
 
 # Password validation

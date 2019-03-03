@@ -1,4 +1,4 @@
-#!/Users/iliesochirca/Documents/Python/chrty/env/bin/python
+#!/home/ilie/Documents/Private/chrity/env/bin/python
 
 import sys
 import getopt
