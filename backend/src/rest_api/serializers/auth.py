@@ -4,7 +4,6 @@ Auth Serializers
 from django.contrib.auth import authenticate
 from rest_framework import serializers, exceptions
 
-from rest_framework.exceptions import ValidationError
 from rest_framework.validators import UniqueValidator
 
 from users.models import User
@@ -23,6 +22,11 @@ class UserSerializer(serializers.ModelSerializer):
     # confirm_password = serializers.CharField()
 
     def create(self, validated_data):
+        """
+
+        :param validated_data:
+        :return: object instance based on the validated data
+        """
         user = User.objects.create_user(email=validated_data["email"], username=validated_data["username"],
                                         password=validated_data["password"],
                                         first_name=validated_data["first_name"], last_name=validated_data["last_name"])
@@ -38,6 +42,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.ModelSerializer):
+    """
+    Login Serializer
+    """
     username = serializers.CharField()
     password = serializers.CharField()
 

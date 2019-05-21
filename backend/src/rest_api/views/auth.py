@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 
 from chrty_backend import settings
-from ..serializers.auth import LoginSerializer, UserSerializer
+from ..serializers import LoginSerializer, UserSerializer
 from django.contrib.auth import login, logout, user_logged_in
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
