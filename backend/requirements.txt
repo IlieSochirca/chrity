@@ -1,6 +1,8 @@
-Django==2.1.7
-djangorestframework==3.9.1
-pytz==2018.9
-psycopg2
-uwsgi
-djangorestframework-jwt
+django
+djangorestframework
+
+psycopg2-binary
+
+pyjwt >=1.7.1,<1.7.2
+
+gunicorn==19.9.0

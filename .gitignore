@@ -1,1 +1,9 @@
 .idea/*
+.DS_Store
+_venv/
+
+.env.prod
+.env.prod.db
+.env.dev
+.env.dev.db
+pgadmin-env.list

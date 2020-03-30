@@ -1,20 +1,36 @@
-FROM python:3.7
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV UWSGI_WSGI_FILE=/src/chrity_backend/wsgi.py
-ENV UWSGI_HTTP=0.0.0.0:8080
-ENV UWSGI_MASTER=1
-ENV UWSGI_WORKERS=2
-ENV UWSGI_THREADS=8
-ENV UWSGI_UID=1000
-ENV UWSGI_GID=2000
-ENV UWSGI_LAZY_APPS=1
-ENV UWSGI_WSGI_ENV_BEHAVIOR=holy
-RUN mkdir /src
-WORKDIR /src
-ADD ./src /src
-ADD requirements.txt requirements.txt
-RUN pip install -r requirements.txt
-EXPOSE 8080
+FROM python:3.7.0-alpine
 
-CMD ["uwsgi", "--http-auto-chunked", "--http-keepalive"]
+# set work directory
+WORKDIR /src
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1 #Prevents Python from writing pyc files to disc (equivalent to python -B option)
+ENV PYTHONUNBUFFERED 1
+
+# install psycopg2 dependencies
+
+RUN apk update \
+    && apk add --virtual build-deps gcc python3-dev musl-dev \
+    && apk add postgresql \
+    && apk add postgresql-dev \
+    && pip install psycopg2 \
+    && apk add jpeg-dev zlib-dev libjpeg \
+    && pip install Pillow
+
+COPY ./src /src
+
+ADD ./requirements.txt ./requirements.txt
+
+# install dependencies
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+#for reducing the size of the Docker Image, we are removing the build-deps folder
+RUN apk del build-deps
+
+# copy entrypoint.sh
+COPY ./src/entrypoint.sh /src/entrypoint.sh
+
+# run entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]
+#CMD gunicorn chrty.wsgi:application --bind 0.0.0.0:$PORT

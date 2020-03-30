@@ -1,5 +1,4 @@
 from rest_framework import generics, permissions
-from rest_framework.generics import get_object_or_404
 
 from ..models import Post
 from ..serializers import PostSerializer

@@ -1,0 +1,1 @@
+"""Package that contains all the BUSINESS LOGIC of the application"""
