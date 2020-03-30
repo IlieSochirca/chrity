@@ -2,8 +2,6 @@
 .DS_Store
 _venv/
 
-.env.prod
-.env.prod.db
-.env.dev
-.env.dev.db
+.env
+.env.db
 pgadmin-env.list
