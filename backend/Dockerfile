@@ -1,36 +1,36 @@
-FROM python:3.7.0-alpine
-
-# set work directory
-WORKDIR /src
+FROM python:3.7-alpine as base
+FROM base as builder
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1 #Prevents Python from writing pyc files to disc (equivalent to python -B option)
 ENV PYTHONUNBUFFERED 1
 
-# install psycopg2 dependencies
+WORKDIR /local
 
+# install dependencies
 RUN apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev \
     && apk add postgresql \
     && apk add postgresql-dev \
-    && pip install psycopg2 \
-    && apk add jpeg-dev zlib-dev libjpeg \
-    && pip install Pillow
+    && apk add jpeg-dev zlib-dev libjpeg
+
+
+COPY ./requirements.txt ./requirements.txt
+
+#RUN pip install --install-option="--prefix=/local" -r ./requirements.txt
+RUN pip install --user -r requirements.txt
+
+FROM base
+
+WORKDIR /src
+
+#COPY --from=builder /local /usr/local/
+COPY --from=builder /root/.local /root/.local
+ENV PATH=/root/.local/bin:$PATH
+
+RUN apk --no-cache add libpq
 
 COPY ./src /src
-
-ADD ./requirements.txt ./requirements.txt
-
-# install dependencies
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-
-#for reducing the size of the Docker Image, we are removing the build-deps folder
-RUN apk del build-deps
-
-# copy entrypoint.sh
 COPY ./src/entrypoint.sh /src/entrypoint.sh
 
-# run entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
-#CMD gunicorn chrty.wsgi:application --bind 0.0.0.0:$PORT
